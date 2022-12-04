@@ -9,25 +9,36 @@ def main(filename: str):
             points = 0
 
             regex = re.search(r"([ABC]) ([XYZ])", line.strip())
-            you = to_rps(regex.group(2))
+            strategy = to_ldw(regex.group(2))
             opponent = to_rps(regex.group(1))
 
-            if you == opponent:
-                # Draw
+            if strategy == "lose":
+                if opponent == "rock":
+                    you = "scissors"
+                elif opponent == "paper":
+                    you = "rock"
+                elif opponent == "scissors":
+                    you = "paper"
+            elif strategy == "draw":
+                you = opponent
                 points += 3
-            elif (you == "rock" and opponent == "scissors") or \
-                    (you == "paper" and opponent == "rock") or \
-                    (you == "scissors" and opponent == "paper"):
-                # Win
+            elif strategy == "win":
+                if opponent == "rock":
+                    you = "paper"
+                elif opponent == "paper":
+                    you = "scissors"
+                elif opponent == "scissors":
+                    you = "rock"
                 points += 6
+
             if you == "rock":
                 points += 1
-            if you == "paper":
+            elif you == "paper":
                 points += 2
-            if you == "scissors":
+            elif you == "scissors":
                 points += 3
 
-            # print(points)
+            # print(you, strategy, points)
             total += points
 
     print(total)
@@ -40,6 +51,15 @@ def to_rps(unit: str) -> str:
         return "paper"
     if unit == "C" or unit == "Z":
         return "scissors"
+
+
+def to_ldw(unit: str) -> str:
+    if unit == "X":
+        return "lose"
+    if unit == "Y":
+        return "draw"
+    if unit == "Z":
+        return "win"
 
 
 if __name__ == '__main__':
