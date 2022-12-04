@@ -1,18 +1,17 @@
 def main(filename: str):
-    maximum = -1
+    totals = []
     current = 0
 
     with open(filename) as file:
         for i, line in enumerate(file):
             line = line.strip()
             if line == "":
-                if current > maximum:
-                    maximum = current
+                totals.append(current)
                 current = 0
             else:
                 current += int(line)
 
-    print(maximum)
+    print(sum(sorted(totals, reverse=True)[:3]))
 
 
 if __name__ == '__main__':
