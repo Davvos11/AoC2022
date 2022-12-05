@@ -40,5 +40,5 @@ def part2(filename: str):
 
 
 if __name__ == '__main__':
-    # part1("input/day03.txt")
+    part1("input/day03.txt")
     part2("input/day03.txt")
