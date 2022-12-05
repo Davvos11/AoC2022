@@ -11,7 +11,7 @@ def main(filename: str):
             a, b, x, y = regex.group(1), regex.group(2), regex.group(3), regex.group(4)
             a, b, x, y = int(a), int(b), int(x), int(y)
 
-            if (a >= x and b <= y) or (x >= a and y <= b):
+            if (b >= x) and (y >= a):
                 print(line.strip())
                 count += 1
 
