@@ -25,7 +25,7 @@ def main(filename: str):
             # Remove crates from original stack
             del stacks[ins['from']][:ins['amount']]
             # Put crates on new stack (in reverse order)
-            to_move.reverse()
+            # to_move.reverse()
             stacks[ins['to']] = to_move + stacks[ins['to']]
 
         result = ""
