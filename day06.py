@@ -1,11 +1,14 @@
+LEN = 14
+
+
 def main(filename: str):
     with open(filename) as file:
         data = file.read().strip()
 
-    buffer = data[:4]
-    count = 4
+    buffer = data[:LEN]
+    count = LEN
 
-    for char in data[4:]:
+    for char in data[LEN:]:
         # Move the buffer
         buffer = buffer[1:] + char
         count += 1
