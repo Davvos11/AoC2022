@@ -68,23 +68,28 @@ def build_tree(filename: str):
     return root
 
 
-def traverse_tree(tree: Folder):
-    result = 0
+def traverse_tree(tree: Folder, target: int, best: int = -1):
+    size = tree.get_size()
+    if best == -1 or target <= size < best:
+        print(f"New candidate found: {tree.name} of size {size}")
+        best = size
 
     for child in tree.children.values():
         if isinstance(child, Folder):
-            size = child.get_size()
-            if size <= 100000:
-                print(f"{child.name} has size {size}")
-                result += size
-            result += traverse_tree(child)
+            best = traverse_tree(child, target, best)
 
-    return result
+    return best
 
 
 def main():
     tree = build_tree("input/day07.txt")
-    result = traverse_tree(tree)
+    # Calculate amount of space that needs to get freed
+    free = 70000000 - tree.get_size()
+    needed = 30000000 - free
+
+    print(f"Need to clear {needed} space")
+
+    result = traverse_tree(tree, needed)
     print(result)
 
 
