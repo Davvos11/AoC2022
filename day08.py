@@ -1,4 +1,4 @@
-def main(filename: str):
+def part01(filename: str):
     # Trees will be a matrix of lists (height (int), visible (bool or None))
     trees = []
 
@@ -34,5 +34,56 @@ def main(filename: str):
     print(visible)
 
 
+def part02(filename: str):
+    trees = []
+
+    with open(filename) as file:
+        for line in file:
+            line = line.strip()
+            trees.append([int(char) for char in line])
+
+    best_score = -1
+
+    for i in range(len(trees)):
+        for j in range(len(trees[i])):
+            current_tree = trees[i][j]
+            score = 1
+
+            # Loop through the 4 possible directions
+            for d in range(4):
+                count = 1
+
+                while True:
+                    if d == 0:
+                        if j + count >= len(trees[i]):
+                            break
+                        next_tree = trees[i][j + count]
+                    elif d == 1:
+                        if j - count < 0:
+                            break
+                        next_tree = trees[i][j - count]
+                    elif d == 2:
+                        if i + count >= len(trees):
+                            break
+                        next_tree = trees[i + count][j]
+                    elif d == 3:
+                        if i - count < 0:
+                            break
+                        next_tree = trees[i - count][j]
+
+                    count += 1
+
+                    if next_tree >= current_tree:
+                        break
+
+                score *= (count - 1)
+
+            if score > best_score:
+                best_score = score
+
+    print(best_score)
+
+
 if __name__ == '__main__':
-    main("input/day08.txt")
+    part01("input/day08.txt")
+    part02("input/day08.txt")
