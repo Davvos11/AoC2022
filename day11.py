@@ -1,3 +1,4 @@
+import math
 import re
 from typing import Callable
 
@@ -54,34 +55,37 @@ def evaluate(old: int, operator: str, argument: str):
 
 
 def run(monkeys: [Monkey]):
-    print(f"\t{monkeys}")
-    for r in range(20):
+    modulo = math.prod({monkey.divisible_test for monkey in monkeys})
+
+    for r in range(10000):
 
         for j, monkey in enumerate(monkeys):
-            print(f"Monkey {j}")
+            # print(f"Monkey {j}")
             items = monkey.items
             monkey.items = []
             for item in items:
-                print(f"\tMonkey inspects an item with a worry level of {item}.")
+                # print(f"\tMonkey inspects an item with a worry level of {item}.")
                 # Apply operation
                 item = evaluate(item, monkey.operator, monkey.argument)
-                print(f"\t\tWorry level changes to {item}")
-                # Divide worry level
-                item = item // 3
-                print(f"\t\tMonkey gets bored with item. Worry level is divided by 3 to {item}")
+                # print(f"\t\tWorry level changes to {item}")
+
+                # Apply modulo of all divisible tests to item
+                item = item % modulo
+                # print(f"\t\tMonkey gets bored with item. Worry level is divided by 3 to {item}")
+
                 # Check to which monkey it gets thrown
-                print(f"\t\tItem with worry level {item} is thrown to monkey ", end='')
+                # print(f"\t\tItem with worry level {item} is thrown to monkey ", end='')
                 if item % monkey.divisible_test == 0:
                     monkeys[monkey.true_monkey].items.append(item)
-                    print(monkey.true_monkey)
+                    # print(monkey.true_monkey)
                 else:
                     monkeys[monkey.false_monkey].items.append(item)
-                    print(monkey.false_monkey)
+                    # print(monkey.false_monkey)
                 # Increase inspection counter of monkey
                 monkey.count += 1
 
         print(f"Round {r + 1}:")
-        print(f"\t{monkeys}")
+        # print(f"\t{monkeys}")
 
     print([f"Monkey {i}: {monkey.count}" for i, monkey in enumerate(monkeys)])
 
