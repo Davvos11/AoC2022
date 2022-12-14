@@ -1,5 +1,6 @@
 import ast
 from enum import Enum
+from functools import cmp_to_key
 
 
 class Comparison(Enum):
@@ -9,6 +10,8 @@ class Comparison(Enum):
 
 
 def main(filename: str):
+    packets = []
+
     with open(filename) as file:
         pairs = file.read().split("\n\n")
 
@@ -19,13 +22,26 @@ def main(filename: str):
         pair1 = ast.literal_eval(pair1)
         pair2 = ast.literal_eval(pair2)
 
+        # Save (for part 2)
+        packets.append(pair1)
+        packets.append(pair2)
+
         comp = compare(pair1, pair2)
-        # print(i + 1, comp)
         if comp == Comparison.CORRECT:
-            print(i + 1)
             result += i + 1
 
-    print(result)
+    print(f"Part 1: {result}")
+
+    # Add divider packets
+    packets.append([[2]])
+    packets.append([[6]])
+    # Sort using our comparison
+    packets = sorted(packets, key=cmp_to_key(compare_function))
+    # Get indices of divider packets
+    divider1 = packets.index([[2]]) + 1
+    divider2 = packets.index([[6]]) + 1
+
+    print(f"Part 2: {divider1 * divider2}")
 
 
 def compare(entry1: int | list, entry2: int | list) -> Comparison:
@@ -61,6 +77,16 @@ def compare(entry1: int | list, entry2: int | list) -> Comparison:
             return Comparison.EQUAL
         # If the left list runs out of items first, the inputs are in the right order.
         return Comparison.CORRECT
+
+
+def compare_function(entry1, entry2) -> int:
+    comparison = compare(entry1, entry2)
+    if comparison == Comparison.CORRECT:
+        return -1
+    elif comparison == Comparison.WRONG:
+        return 1
+    else:
+        return 0
 
 
 if __name__ == '__main__':
